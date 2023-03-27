@@ -1,0 +1,48 @@
+parameters:
+  - name: env
+    type: string
+    default: Prod
+    values:
+      - Dev
+      - Qa
+      - Prod
+  - name: refs
+    type: string
+    default: refs/heads/Dev
+    values:
+      - refs/heads/Dev
+      - refs/heads/Qa
+      - refs/heads/Prod
+
+resources:
+   repositories: 
+   - repository: Dot-net-application
+     type: git
+     name: Malik/Dot-net-application
+     ref: ${{parameters.refs}}
+
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+variables:
+- template: Variables.yaml
+
+stages:
+- template: build.yaml
+
+- stage: DeployDev
+  dependsOn: Build
+  displayName: Deploy Dev
+  jobs:
+  - job: 
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: Download-artifact.yaml
+    - template: Deploy-dev.yaml
+    - template: Download-artifact.yaml
+    - template: Deploye-Qa.yaml
+    - template: Download-artifact.yaml
+    - template: Deploye-Prod.yaml

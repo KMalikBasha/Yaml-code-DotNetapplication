@@ -1,0 +1,8 @@
+steps:
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Malik-Service-connection'
+      appType: 'webApp'
+      WebAppName: 'Qa-ev'
+      packageForLinux: '$(Build.ArtifactStagingDirectory)/drop/*.zip'

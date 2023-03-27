@@ -1,0 +1,4 @@
+variables:
+  solution: '**/*.csproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
